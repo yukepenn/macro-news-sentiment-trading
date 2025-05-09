@@ -1,0 +1,73 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+---
+description: >-
+  Enforce coding conventions, project structure, documentation standards,
+  logging practices, and version control rules for the “News & Macro
+  Sentiment Alpha” pipeline. Applies to Python source files, project
+  configuration, and Cursor rule files.
+globs:
+  - '**/*.py'
+  - 'README.md'
+  - 'requirements.txt'
+  - '.cursor/**/*.mdc'
+alwaysApply: true
+---
+
+# Project Structure
+- **`data/raw/`**: Immutable raw CSV/API dumps (e.g. GDELT, FX rates, yields).  
+- **`data/processed/`**: Cleaned and merged datasets ready for modeling.  
+- **`scripts/`**: Orchestrators for pipeline steps (`fetch_gdelt_data.py`, `sentiment_analysis.py`, etc.).  
+- **`utils/`**: Helper modules (`gdelt_utils.py`, `nlp_utils.py`, `finance_utils.py`, `plot_utils.py`).  
+- **`models/`**: Serialized model artifacts (e.g. `sentiment_model.pkl`).  
+- **`backtest/`**: Backtest outputs (`daily_returns.csv`, `performance_metrics.txt`).  
+- **`visuals/`**: Generated charts (`equity_curve.png`, `sentiment_index.png`, `shap_summary.png`).  
+
+# Project Structure Details and Python files
+data/
+  raw/
+  processed/
+scripts/
+  fetch_gdelt_data.py
+  fetch_market_data.py
+  sentiment_analysis.py
+  prepare_features.py
+  train_model.py
+  run_backtest.py
+utils/
+  gdelt_utils.py
+  nlp_utils.py
+  finance_utils.py
+  plot_utils.py
+models/
+  finbert/
+backtest/
+visuals/
+
+
+# Documentation & Dependencies
+- **`README.md`** must include:  
+  1. Project overview & objectives.  
+  2. Setup: `pip install -r requirements.txt`.  
+  3. Execution steps for each script.  
+  4. Summary of key results & visuals.  
+- **`requirements.txt`**: Pin all dependencies (`pandas`, `numpy`, `transformers`, `scikit-learn`, `xgboost`, `shap`, `yfinance`, etc.).
+
+# Logging & Error Handling
+- Use Python’s built-in **`logging`** module at **INFO** level.  
+- Wrap all external calls (API requests, file I/O) in `try/except` blocks; log exceptions and continue gracefully.
+
+# Formatting & Quality
+- **Black**: Run `black .` before each commit.  
+- **Docstrings**: Google or NumPy style for all functions & classes.  
+- **Naming**:  
+  - Files/modules & functions: **snake_case**.  
+  - Classes: **PascalCase**.  
+- **Entry Point**:  
+  ```python
+  if __name__ == "__main__":
+      main()
+
