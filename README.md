@@ -18,14 +18,39 @@ The system processes global news data from GDELT, applies FinBERT for sentiment 
 .
 ├── data/
 │   ├── raw/           # Raw data from GDELT and market sources
+│   │   ├── gdelt/     # GDELT news data
+│   │   └── market/    # Market data for macro assets
 │   └── processed/     # Processed datasets and features
+│       ├── sentiment/ # Processed sentiment data
+│       └── features/  # Engineered features for trading
 ├── scripts/           # Main pipeline scripts
+│   ├── fetch_gdelt_data.py    # Script to fetch news data from GDELT
+│   ├── fetch_market_data.py   # Script to fetch market data
+│   ├── sentiment_analysis.py  # Script for sentiment analysis
+│   ├── prepare_features.py    # Script for feature engineering
+│   ├── train_model.py        # Script for model training
+│   └── run_backtest.py       # Script for strategy backtesting
 ├── utils/            # Utility functions and helpers
+│   ├── gdelt_utils.py    # GDELT data handling utilities
+│   ├── nlp_utils.py      # NLP and sentiment analysis utilities
+│   ├── finance_utils.py  # Financial calculations and metrics
+│   └── plot_utils.py     # Visualization utilities
 ├── models/           # Saved models and model artifacts
+│   └── finbert/     # FinBERT model and configurations
 ├── backtest/         # Backtesting results and metrics
+│   ├── results/     # Backtest performance results
+│   └── metrics/     # Detailed performance metrics
 ├── visuals/          # Generated plots and visualizations
+│   ├── sentiment/   # Sentiment analysis visualizations
+│   ├── performance/ # Trading performance charts
+│   └── features/    # Feature analysis plots
 ├── tests/            # Unit tests
+│   ├── test_gdelt_utils.py
+│   ├── test_nlp_utils.py
+│   └── test_finance_utils.py
 └── docs/             # Additional documentation
+    ├── api/         # API documentation
+    └── guides/      # User guides and tutorials
 ```
 
 ## Setup and Installation
