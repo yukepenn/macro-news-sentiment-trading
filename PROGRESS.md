@@ -5,24 +5,32 @@
 - [x] Basic README and documentation
 - [x] Data fetching scripts for GDELT and market data
 - [x] Initial data processing pipeline
-- [ ] Sentiment analysis implementation
-- [ ] Feature engineering
-- [ ] Model development
+- [x] Sentiment analysis implementation
+- [x] Feature engineering
+- [x] Model development
 - [ ] Backtesting framework
 - [ ] Performance evaluation
 - [ ] Documentation and deployment
 
 ## Recent Updates
+- Added threshold optimization to model tuning:
+  - Implemented confidence-based trading thresholds
+  - Added grid search for optimal upper/lower thresholds
+  - Enhanced strategy evaluation with Sharpe ratio and turnover metrics
+- Added new advanced features to feature engineering pipeline:
+  - Goldstein momentum with multiple decay rates
+  - Article count spike detection using z-scores
+  - Smoothed sentiment using exponential weighted moving averages
+  - New interaction features combining spikes and sentiment
 - Updated GDELT data fetching to use BigQuery for better reliability and performance
 - Added Google Cloud dependencies to requirements.txt
 - Enhanced data processing pipeline with feature engineering
 
 ## Next Steps
-1. Implement sentiment analysis using FinBERT
-2. Develop feature engineering pipeline
-3. Create backtesting framework
-4. Implement trading strategy
-5. Add performance evaluation metrics
+1. Implement backtesting framework
+2. Add performance evaluation metrics
+3. Create visualization dashboard
+4. Complete documentation
 
 ## Completed
 - [x] Project structure setup
