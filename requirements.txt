@@ -17,4 +17,5 @@ google-cloud-bigquery>=3.0.0
 google-cloud-bigquery-storage>=2.0.0
 gdelt>=1.0.0
 nltk>=3.6.0
-spacy>=3.0.0 
+spacy>=3.0.0
+shap>=0.42.0 
