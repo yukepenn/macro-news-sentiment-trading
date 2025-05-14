@@ -1,5 +1,29 @@
 # Project Progress
 
+## Current Status
+- [x] Project structure setup
+- [x] Basic README and documentation
+- [x] Data fetching scripts for GDELT and market data
+- [x] Initial data processing pipeline
+- [ ] Sentiment analysis implementation
+- [ ] Feature engineering
+- [ ] Model development
+- [ ] Backtesting framework
+- [ ] Performance evaluation
+- [ ] Documentation and deployment
+
+## Recent Updates
+- Updated GDELT data fetching to use BigQuery for better reliability and performance
+- Added Google Cloud dependencies to requirements.txt
+- Enhanced data processing pipeline with feature engineering
+
+## Next Steps
+1. Implement sentiment analysis using FinBERT
+2. Develop feature engineering pipeline
+3. Create backtesting framework
+4. Implement trading strategy
+5. Add performance evaluation metrics
+
 ## Completed
 - [x] Project structure setup
 - [x] Requirements.txt creation
