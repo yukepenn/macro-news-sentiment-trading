@@ -8,9 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Initial project setup with basic structure
+- README.md with project overview and setup instructions
+- Basic data fetching scripts for GDELT and market data
+- Requirements.txt with necessary dependencies
 - Initial project structure
 - Basic utility modules for data handling and analysis
-- Data acquisition scripts for GDELT and market data
 - Sentiment analysis script using FinBERT
 - Feature preparation script for combining sentiment and market data
 - Project directory structure (data/, models/, backtest/, visuals/, tests/, docs/)
@@ -18,6 +21,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - API documentation
 
 ### Changed
+- Updated GDELT data fetching to use BigQuery instead of GDELT API
+- Added Google Cloud dependencies to requirements.txt
 - Updated project structure to include processed data directory
 - Enhanced data processing pipeline with feature engineering
 
