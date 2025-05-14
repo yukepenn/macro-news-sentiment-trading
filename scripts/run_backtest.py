@@ -23,11 +23,20 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 def load_model(model_path: Path):
-    """Load the pickled model, scaler, and metadata."""
+    """Load a trained model and its metadata. Supports both old and new (pipeline) formats."""
     logger.info(f"Loading model from {model_path}")
     with open(model_path, "rb") as f:
         data = pickle.load(f)
-    return data["model"], data["scaler"], data["feature_names"]
+    if "pipeline" in data:
+        pipeline = data["pipeline"]
+        scaler = pipeline.named_steps["scaler"]
+        clf = pipeline.named_steps["clf"]
+        # Try to get feature names from the classifier or from the input data
+        feature_names = getattr(clf, "feature_names_in_", None)
+        return pipeline, scaler, feature_names
+    else:
+        # fallback for legacy model format
+        return data["model"], data["scaler"], data["feature_names"]
 
 def load_features(features_path: Path):
     """Load the feature DataFrame (must include date & return_t+1)."""
@@ -38,6 +47,9 @@ def load_features(features_path: Path):
 
 def simulate_backtest(model, scaler, feature_names, df: pd.DataFrame):
     """Run through each date, predict, and compute strategy returns."""
+    # Use DataFrame columns if feature_names is None
+    if feature_names is None:
+        feature_names = [col for col in df.columns if col not in ["date", "return_t+1"]]
     # Extract feature matrix and true next-day returns
     X = df[feature_names].values
     X_df = pd.DataFrame(X, columns=feature_names)  # Create DataFrame with feature names
