@@ -19,6 +19,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, roc_auc_score
 import matplotlib.pyplot as plt
 import seaborn as sns
+from xgboost import XGBClassifier
 
 # Setup logging
 logging.basicConfig(
@@ -64,10 +65,23 @@ def prepare_data(df: pd.DataFrame, test_size: float = 0.2) -> tuple:
     
     return X_train_scaled, X_test_scaled, y_train, y_test, feature_cols, scaler
 
-def train_model(X_train: np.ndarray, y_train: np.ndarray) -> LogisticRegression:
-    """Train logistic regression model."""
-    logger.info("Training model...")
-    model = LogisticRegression(random_state=42, max_iter=1000)
+def train_model(X_train: np.ndarray, y_train: np.ndarray, algo: str = "logistic") -> object:
+    """Train model based on specified algorithm."""
+    logger.info(f"Training model: {algo}")
+    if algo == "logistic":
+        model = LogisticRegression(random_state=42, max_iter=1000)
+    else:  # xgb
+        model = XGBClassifier(
+            objective="binary:logistic",
+            n_estimators=100,
+            max_depth=3,
+            learning_rate=0.1,
+            subsample=0.8,
+            colsample_bytree=0.8,
+            random_state=42,
+            use_label_encoder=False,
+            eval_metric="logloss"
+        )
     model.fit(X_train, y_train)
     return model
 
@@ -91,12 +105,16 @@ def evaluate_model(model, X_train: np.ndarray, X_test: np.ndarray,
     logger.info(f"Test Accuracy: {test_acc:.3f}, AUC: {test_auc:.3f}")
 
 def generate_shap_plot(model, X_test: np.ndarray, feature_names: list, 
-                      output_path: Path) -> None:
+                      output_path: Path, algo: str) -> None:
     """Generate and save SHAP summary plot."""
     logger.info("Generating SHAP analysis...")
     
-    # Calculate SHAP values
-    explainer = shap.LinearExplainer(model, X_test)
+    # Select appropriate explainer based on algorithm
+    if algo == "logistic":
+        explainer = shap.LinearExplainer(model, X_test)
+    else:  # xgb
+        explainer = shap.TreeExplainer(model)
+    
     shap_values = explainer.shap_values(X_test)
     
     # Create summary plot
@@ -133,6 +151,8 @@ def main():
                       help="Path to save trained model")
     parser.add_argument("--shap", type=str, required=True,
                       help="Path to save SHAP summary plot")
+    parser.add_argument("--algo", choices=["logistic", "xgb"], default="logistic",
+                      help="Which model to train: logistic regression or XGBoost")
     args = parser.parse_args()
     
     try:
@@ -143,8 +163,8 @@ def main():
         # Prepare data
         X_train, X_test, y_train, y_test, feature_names, scaler = prepare_data(df)
         
-        # Train model
-        model = train_model(X_train, y_train)
+        # Train model (logistic or xgb)
+        model = train_model(X_train, y_train, algo=args.algo)
         
         # Evaluate
         evaluate_model(model, X_train, X_test, y_train, y_test)
@@ -152,7 +172,7 @@ def main():
         # Generate SHAP plot
         shap_path = Path(args.shap)
         shap_path.parent.mkdir(parents=True, exist_ok=True)
-        generate_shap_plot(model, X_test, feature_names, shap_path)
+        generate_shap_plot(model, X_test, feature_names, shap_path, args.algo)
         
         # Save model
         model_path = Path(args.model)

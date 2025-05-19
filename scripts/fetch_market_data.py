@@ -27,8 +27,7 @@ logger = logging.getLogger(__name__)
 ASSETS = {
     "EURUSD": "EURUSD=X",  # EUR/USD exchange rate
     "USDJPY": "USDJPY=X",  # USD/JPY exchange rate
-    "TNX": "^TNX",         # 10-Year Treasury Yield
-    "TLT": "TLT",          # 20+ Year Treasury Bond ETF
+    "ZN": "ZN=F",          # 10 Year Treasury Bond Futures (front month)
 }
 
 def parse_args():
@@ -122,7 +121,7 @@ def convert_wide_to_tidy(input_path: Path, output_dir: Path):
     import pandas as pd
     import os
     
-    tickers = ["eurusd", "usdjpy", "tnx", "tlt"]
+    tickers = ["eurusd", "usdjpy", "zn"]
     metrics = ["open", "high", "low", "close", "volume"]
     
     # 1) Read the file, skip the second header row
