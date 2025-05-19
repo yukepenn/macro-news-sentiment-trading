@@ -1,0 +1,4 @@
+CAGR: 0.0308
+Sharpe: 0.6801
+Max Drawdown: -0.0977
+Win Rate: 0.4978
