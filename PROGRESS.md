@@ -25,8 +25,6 @@
 - Updated GDELT data fetching to use BigQuery for better reliability and performance
 - Added Google Cloud dependencies to requirements.txt
 - Enhanced data processing pipeline with feature engineering
-- sentiment_analysis.py now loads gdelt_macro_events_top20_with_headlines.csv and uses the 'headline' column for FinBERT sentiment analysis.
-- Updated sentiment_analysis.py to move the model onto the GPU once and increased the default batch size to 64 for improved performance.
 
 ## Next Steps
 1. Implement backtesting framework

@@ -127,4 +127,17 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 - GDELT Project for news data
 - ProsusAI for FinBERT model
-- Yahoo Finance for market data 
+- Yahoo Finance for market data
+
+## Data Sources
+
+### Market Data
+- **Foreign Exchange (FX)**
+  - EUR/USD and USD/JPY exchange rates from Yahoo Finance
+  - Daily OHLCV data from 2015-01-01 to present
+
+- **Treasury Futures**
+  - We attempt to download the back-adjusted continuous 10-year note series (CHRIS/CME_ZN1) via Nasdaq Data Link
+  - If access is unavailable (403 error), we fall back to the front-month contract (ZN=F) via Yahoo Finance
+  - Note: The front-month contract introduces small roll discontinuities at contract expiration dates
+  - Daily OHLCV data from 2015-01-01 to present 
