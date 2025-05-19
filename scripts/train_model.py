@@ -226,24 +226,29 @@ def walk_forward_evaluate(
         # 3) train
         model = train_model(X_tr_s, y_train, algo=algo)
 
-        # 4) predict & metrics
-        prob = model.predict_proba(X_te_s)[:,1]
-        
-        # Optimize threshold if requested
+        # 4) get train & test probabilities
+        prob_train = model.predict_proba(X_tr_s)[:, 1]
+        prob_test = model.predict_proba(X_te_s)[:, 1]
+
+        # 5) optimize threshold on TRAIN only
         if optimize_thresholds:
-            threshold = optimize_threshold(prob, returns[strategy_returns_idx])
-            logger.info(f"Fold {fold+1}: Optimal threshold = {threshold:.3f}")
+            # Align returns_train with next-day returns
+            returns_train_idx = train_idx + 1
+            returns_train_idx = returns_train_idx[returns_train_idx < len(returns)]
+            returns_train = returns[returns_train_idx]
+            threshold = optimize_threshold(prob_train, returns_train)
+            logger.info(f"Fold {fold+1}: Optimal threshold = {threshold:.3f} (train)")
         else:
             threshold = 0.5
             
-        pred = (prob > threshold).astype(int)
-        auc = roc_auc_score(y_test, prob)
-        acc = accuracy_score(y_test, pred)
+        # 6) apply threshold to TEST
+        pred_test = (prob_test > threshold).astype(int)
+        auc = roc_auc_score(y_test, prob_test)
+        acc = accuracy_score(y_test, pred_test)
 
-        # 5) Calculate strategy returns for this fold
-        # We need to align positions with t+1 returns
-        positions = np.where(prob > threshold, 1, -1)
-        positions = positions[:len(strategy_returns_idx)]  # Trim to match available returns
+        # 7) compute strategy returns on TEST
+        positions = np.where(prob_test > threshold, 1, -1)
+        positions = positions[:len(strategy_returns_idx)]
         strategy_returns = positions * returns[strategy_returns_idx]
         
         # Calculate costs if provided
