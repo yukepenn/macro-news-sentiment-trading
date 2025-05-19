@@ -1,4 +1,9 @@
-CAGR: 0.5723
-Sharpe: 6.1725
-Max Drawdown: -0.1415
-Win Rate: 0.7364
+CAGR: 0.5543
+Sharpe: 5.8722
+Volatility: 0.0738
+Max Drawdown: -0.1555
+Win Rate: 0.7265
+Total Return: 89.8934
+Number of Trades: 1158.0000
+Total Cost: 0.2316
+Cost per Trade: 0.0002
