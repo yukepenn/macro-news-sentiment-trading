@@ -31,7 +31,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - API documentation
 
 ### Changed
-- Updated GDELT data fetching to use BigQuery instead of GDELT API
+- Updated GDELT data fetching to use DOC API for full article content
+  - Switched from events API to DOC API for richer content
+  - Added support for article titles and descriptions
+  - Improved error handling and logging
+  - Added pagination support for large date ranges
 - Added Google Cloud dependencies to requirements.txt
 - Updated project structure to include processed data directory
 - Enhanced data processing pipeline with feature engineering
