@@ -29,7 +29,10 @@ logger = logging.getLogger(__name__)
 def load_data():
     """Load GDELT macro events data."""
     logger.info("Loading GDELT macro events...")
-    df = pd.read_csv("data/raw/gdelt/gdelt_macro_events_2015_2025.csv", parse_dates=["date"])
+    df = pd.read_csv(
+        "data/raw/gdelt/gdelt_macro_events_top100_with_headlines.csv",
+        parse_dates=["date"]
+    )
     logger.info(f"Loaded {len(df):,} events")
     return df
 
@@ -38,6 +41,8 @@ def init_finbert():
     logger.info("Initializing FinBERT...")
     tokenizer = AutoTokenizer.from_pretrained("ProsusAI/finbert")
     model = AutoModelForSequenceClassification.from_pretrained("ProsusAI/finbert")
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    model.to(device)
     model.eval()
     return tokenizer, model
 
@@ -45,9 +50,6 @@ def score_batch(texts, tokenizer, model, device="cuda" if torch.cuda.is_availabl
     """Score a batch of texts using FinBERT."""
     if not texts:  # Handle empty batch
         return []
-    
-    # Move model to device
-    model = model.to(device)
     
     # Tokenize and prepare inputs
     inputs = tokenizer(texts, padding=True, truncation=True, return_tensors="pt")
@@ -67,8 +69,8 @@ def process_sentiment(df, tokenizer, model, batch_size=32):
     """Process sentiment for all events in batches."""
     logger.info("Processing sentiment scores...")
     
-    # Use tone as text if available, otherwise use event_type
-    df['text'] = df['tone'].astype(str) + " " + df['event_type'].astype(str)
+    # Use the scraped headline for real NLP
+    df['text'] = df['headline'].astype(str)
     
     # Process in batches with progress bar
     scores = []

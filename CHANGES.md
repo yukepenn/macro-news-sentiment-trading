@@ -57,4 +57,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Project initialization
 - Basic project structure
-- Essential configuration files 
+- Essential configuration files
+
+### Changed
+- Updated scripts/sentiment_analysis.py to load the new with-headlines CSV and use the scraped headline as FinBERT input for sentiment analysis.
+- Updated scripts/sentiment_analysis.py to move the model onto the GPU once and increased the default batch size to 64 for improved performance. 
